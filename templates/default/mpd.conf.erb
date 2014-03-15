@@ -5,11 +5,11 @@
 # You can put symlinks in here, if you like. Make sure that
 # the user that mpd runs as (see the 'user' config parameter)
 # can read the files in this directory.
-music_directory		<%= node[:mpd][:music_directory] %>
+music_directory		"<%= node[:mpd][:music_directory] %>"
 playlist_directory	"/var/lib/mpd/playlists"
 db_file			"/var/lib/mpd/tag_cache"
 log_file		"/var/log/mpd/mpd.log"
-error_file		"/var/log/mpd/errors.log"
+#error_file		"/var/log/mpd/errors.log"
 ################################################################
 
 
@@ -100,10 +100,10 @@ zeroconf_name                   "MPD on <%= node.name %>"
 #
 # An example of an ALSA output:
 #
-audio_output {
-    type     "pulse"
-    name     "PulseAudio (local)"
-}
+#audio_output {
+#    type     "pulse"
+#    name     "PulseAudio (local)"
+#}
 #audio_output {
 #        type                    "alsa"
 #        name                    "My ALSA Device"
@@ -122,30 +122,30 @@ audio_output {
 #
 # An example of a shout output (for streaming to Icecast):
 #
-#audio_output {
-#        type                    "shout"
-#        encoding                "ogg"                   # optional
-#        name                    "My Shout Stream"
-#        host                    "localhost"
-#        port                    "8000"
-#        mount                   "/mpd.ogg"
-#        password                "hackme"
-#        quality                 "5.0"
-#        bitrate                 "128"
-#        format                  "44100:16:1"
-#        user                    "source"                # optional
-#        description             "My Stream Description" # optional
-#        genre                   "jazz"                  # optional
-#        public                  "no"                    # optional
-#        timeout                 "2"                     # optional
-#}
+audio_output {
+        type                    "shout"
+        encoding                "mp3"                   # optional
+        name                    "My Shout Stream"
+        host                    "localhost"
+        port                    "8000"
+        mount                   "/mpd.mp3"
+        password                "hackme"
+        #quality                 "5.0"
+        bitrate                 "128"
+        format                  "44100:16:1"
+        user                    "source"                # optional
+        description             "My Stream Description" # optional
+        genre                   "jazz"                  # optional
+        public                  "no"                    # optional
+        timeout                 "2"                     # optional
+}
 #
 # An example of a null output (for no audio output):
 #
-#audio_output {
-#        type                    "null"
-#        name                    "My Null Output"
-#}
+audio_output {
+        type                    "null"
+        name                    "My Null Output"
+}
 #
 # Force all decoded audio to be converted to this format before
 # being passed to the audio outputs.
@@ -171,8 +171,8 @@ audio_output {
 # An example for controlling an ALSA mixer:
 #
 mixer_type                      "software"
-mixer_device                    "default"
-mixer_control                   "Master"
+#mixer_device                    "default"
+#mixer_control                   "Master"
 #
 # An example for controlling an OSS mixer:
 #
