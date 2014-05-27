@@ -36,7 +36,7 @@ package "mpd"
 #   }
 # },
 
-node.normal[:mpd][:channels].each do |channel|
+node.normal[:mpd][:channels].each_value do |channel|
 	# create socket
 	file channel[:socket] do
 	  action :touch
