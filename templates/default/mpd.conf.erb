@@ -6,10 +6,10 @@
 # the user that mpd runs as (see the 'user' config parameter)
 # can read the files in this directory.
 #music_directory	"<%= node[:mpd][:music_directory] %>"
-playlist_directory	"/var/lib/mpd/playlists"
+playlist_directory	"/var/lib/mpd/playlists_<%= node[:mpd][:channel_name] %>"
 db_file			"<%= node[:mpd][:db_file] %>" # "/var/lib/mpd/tag_cache"
-log_file		"/var/log/mpd/mpd.log"
-#error_file		"/var/log/mpd/errors.log"
+log_file		"/var/log/mpd/mpd_<%= node[:mpd][:channel_name] %>.log"
+#error_file		"/var/log/mpd/errors_<%= node[:mpd][:channel_name] %>.log"
 ################################################################
 
 
@@ -18,13 +18,13 @@ log_file		"/var/log/mpd/mpd.log"
 # If you wish to use mpd --kill to stop MPD, then you must
 # specify a file here in which to store MPD's process ID.
 #
-pid_file		"/var/run/mpd/pid"
+pid_file		"/var/run/mpd/pid_<%= node[:mpd][:channel_name] %>"
 #
 # If specified, MPD will save its current state (playlist,
 # current song, playing/paused, etc.) at exit.  This will be
 # used to restore the session the next time it is run.
 #
-state_file		"/var/lib/mpd/state"
+state_file		"/var/lib/mpd/state_<%= node[:mpd][:channel_name] %>"
 #
 ################################################################
 
@@ -129,7 +129,7 @@ audio_output {
         name                    "My Shout Stream"
         host                    "localhost"
         port                    "8000"
-        mount                   "/mpd.mp3"
+        mount                   "<%= node[:mpd][:icecast_mountpoint] %>"
         password                "hackme"
         #quality                 "5.0"
         bitrate                 "128"

@@ -19,22 +19,34 @@
 
 package "mpd"
 
-# name: 'mpd_mix',
-# bind: '0.0.0.0',
-# socket: '/home/vagrant/.mpd/socket/mix',
-# port: '6600'
-node[:mpd][:channels].each do |channel|
+# mpd: {
+#   channels: {
+#     mix: {
+#       name: 'mpd_mix',
+#       bind: '0.0.0.0',
+#       socket: '/home/vagrant/.mpd/socket/mix',
+#       port: '6600'
+#     },
+#     tech: {
+#       name: 'tech',
+#       bind: '0.0.0.0',
+#       socket: '/home/vagrant/.mpd/socket/tech',
+#       port: '6601'
+#   }
+#   }
+# },
+
+node.normal[:mpd][:channels].each do |channel|
 	# create socket
 	file channel[:socket] do
-	  owner "mpd"
-	  group "mpd"
-	  mode "0755"
 	  action :touch
 	end
 
-	default[:mpd][:port] = channel[:port]
-	default[:mpd][:db_file] = "/var/lib/mpd/tag_cache_" + channel[:name]
-	default[:mpd][:bind_2] = channel[:socket]
+	node.set[:mpd][:port] = channel[:port]
+	node.set[:mpd][:db_file] = "/var/lib/mpd/tag_cache_" + channel[:name]
+	node.set[:mpd][:bind_2] = channel[:socket]
+	node.set[:mpd][:icecast_mountpoint] = "/" + channel[:name] + ".mp3"
+	node.set[:mpd][:channel_name] = channel[:name]
 
 	# create service
 	service channel[:name] do
