@@ -23,7 +23,7 @@ package "mpd"
 # bind: '0.0.0.0',
 # socket: '/home/vagrant/.mpd/socket/mix',
 # port: '6600'
-default[:mpd][:channels].each do |channel|
+node[:mpd][:channels].each do |channel|
 	# create socket
 	file channel[:socket] do
 	  owner "mpd"
