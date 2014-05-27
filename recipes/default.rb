@@ -19,12 +19,34 @@
 
 package "mpd"
 
-service "mpd" do
-  action :enable
+# name: 'mpd_mix',
+# bind: '0.0.0.0',
+# socket: '/home/vagrant/.mpd/socket/mix',
+# port: '6600'
+default[:mpd][:channels].each do |channel|
+	# create socket
+	file channel[:socket] do
+	  owner "mpd"
+	  group "mpd"
+	  mode "0755"
+	  action :touch
+	end
+
+	default[:mpd][:port] = channel[:port]
+	default[:mpd][:db_file] = "/var/lib/mpd/tag_cache_" + channel[:name]
+	default[:mpd][:bind_2] = channel[:socket]
+
+	# create service
+	service channel[:name] do
+	  service_name "mpd" # linux service command
+	  action :enable
+	end
+
+	config_filename = "/etc/" + channel[:name] + ".conf"
+	template config_filename do
+	  source "mpd.conf.erb"
+	  mode "0644"
+	  notifies :restart, resources(:service => channel[:name])
+	end
 end
 
-template "/etc/mpd.conf" do
-  source "mpd.conf.erb"
-  mode "0644"
-  notifies :restart, resources(:service => "mpd")
-end

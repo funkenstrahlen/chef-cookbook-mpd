@@ -5,9 +5,9 @@
 # You can put symlinks in here, if you like. Make sure that
 # the user that mpd runs as (see the 'user' config parameter)
 # can read the files in this directory.
-music_directory		"<%= node[:mpd][:music_directory] %>"
+#music_directory	"<%= node[:mpd][:music_directory] %>"
 playlist_directory	"/var/lib/mpd/playlists"
-db_file			"/var/lib/mpd/tag_cache"
+db_file			"<%= node[:mpd][:db_file] %>" # "/var/lib/mpd/tag_cache"
 log_file		"/var/log/mpd/mpd.log"
 #error_file		"/var/log/mpd/errors.log"
 ################################################################
