@@ -6,10 +6,10 @@
 # the user that mpd runs as (see the 'user' config parameter)
 # can read the files in this directory.
 #music_directory	"<%= node[:mpd][:music_directory] %>"
-playlist_directory	"/var/lib/mpd/playlists_<%= node[:mpd][:channel_name] %>"
-db_file			"<%= node[:mpd][:db_file] %>" # "/var/lib/mpd/tag_cache"
-log_file		"/var/log/mpd/mpd_<%= node[:mpd][:channel_name] %>.log"
-#error_file		"/var/log/mpd/errors_<%= node[:mpd][:channel_name] %>.log"
+playlist_directory	"/var/lib/mpd/playlists_<%= @channel[:name] %>"
+db_file			"/var/lib/mpd/tag_cache_<%= @channel[:name] %>"
+log_file		"/var/log/mpd/mpd_<%= @channel[:name] %>.log"
+#error_file		"/var/log/mpd/errors_<%= @channel[:name] %>.log"
 ################################################################
 
 
@@ -18,13 +18,13 @@ log_file		"/var/log/mpd/mpd_<%= node[:mpd][:channel_name] %>.log"
 # If you wish to use mpd --kill to stop MPD, then you must
 # specify a file here in which to store MPD's process ID.
 #
-pid_file		"/var/run/mpd/pid_<%= node[:mpd][:channel_name] %>"
+pid_file		"/var/run/mpd/pid_<%= @channel[:name] %>"
 #
 # If specified, MPD will save its current state (playlist,
 # current song, playing/paused, etc.) at exit.  This will be
 # used to restore the session the next time it is run.
 #
-state_file		"/var/lib/mpd/state_<%= node[:mpd][:channel_name] %>"
+state_file		"/var/lib/mpd/state_<%= @channel[:name] %>"
 #
 ################################################################
 
@@ -40,9 +40,9 @@ user                            "<%= node[:mpd][:user] %>"
 #
 # The address and port to listen on.
 #
-bind_to_address                 "<%= node[:mpd][:bind] %>"
-bind_to_address                 "<%= node[:mpd][:bind_2] %>"
-port                            "<%= node[:mpd][:port] %>"
+bind_to_address                 "<%= @channel[:bind] %>"
+bind_to_address                 "<%= @channel[:socket] %>"
+port                            "<%= @channel[:port] %>"
 #
 # If the address is a path, then a UNIX domain socket will be
 # created instead of listening on a TCP port.
@@ -129,7 +129,7 @@ audio_output {
         name                    "My Shout Stream"
         host                    "localhost"
         port                    "8000"
-        mount                   "<%= node[:mpd][:icecast_mountpoint] %>"
+        mount                   "/<%= @channel[:name] %>.mp3"
         password                "hackme"
         #quality                 "5.0"
         bitrate                 "128"

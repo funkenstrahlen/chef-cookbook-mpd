@@ -36,29 +36,35 @@ package "mpd"
 #   }
 # },
 
-node.normal[:mpd][:channels].each_value do |channel|
+node[:mpd][:channels].each_value do |channel|
+
 	# create socket
 	file channel[:socket] do
 	  action :touch
 	end
 
-	node.set[:mpd][:port] = channel[:port]
-	node.set[:mpd][:db_file] = "/var/lib/mpd/tag_cache_" + channel[:name]
-	node.set[:mpd][:bind_2] = channel[:socket]
-	node.set[:mpd][:icecast_mountpoint] = "/" + channel[:name] + ".mp3"
-	node.set[:mpd][:channel_name] = channel[:name]
+	# create init file
+	init_filename = "/etc/init.d/" + channel[:name]
+	template init_filename do
+	  variables :channel => channel
+	  source "mpd.init.erb"
+	  mode "0755"
+	end
 
 	# create service
 	service channel[:name] do
-	  service_name "mpd" # linux service command
+	  service_name channel[:name] # linux service command
 	  action :enable
 	end
 
+	# create config file
 	config_filename = "/etc/" + channel[:name] + ".conf"
 	template config_filename do
+	  variables :channel => channel
 	  source "mpd.conf.erb"
 	  mode "0644"
 	  notifies :restart, resources(:service => channel[:name])
 	end
+
 end
 
