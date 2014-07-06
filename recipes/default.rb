@@ -43,6 +43,7 @@ node[:mpd][:channels].each_value do |channel|
           owner "vagrant"
           group "users"
           mode 00644
+          recursive true
           action :create
         end
 	
