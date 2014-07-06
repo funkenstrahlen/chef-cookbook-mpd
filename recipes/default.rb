@@ -38,6 +38,14 @@ package "mpd"
 
 node[:mpd][:channels].each_value do |channel|
 
+	# create socket directory	
+	directory File.dirname(channel[:socket]) do
+          owner "vagrant"
+          group "users"
+          mode 00644
+          action :create
+        end
+	
 	# create socket
 	file channel[:socket] do
 	  action :touch
